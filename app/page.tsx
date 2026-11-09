@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Send, Sparkles, X } from 'lucide-react';
 import { ntdpAssets, ntdpScreens as screens } from '../lib/ntdp-assets';
+
+const MentorScene = dynamic(() => import('../components/mentor-scene'), { ssr: false });
 
 const architecture = [
   { id: 'experience', number: '01', title: 'Experience layer', label: 'React · Next.js', description: 'Learner-facing product surfaces, responsive interaction states, and the reusable component system that keeps the experience coherent.', details: ['Reusable interface components', 'Responsive product surfaces', 'Streaming conversation UI'], color: 'violet' },
@@ -144,8 +147,7 @@ export default function Home() {
       <div className="mentor-stage" data-reveal>
         <div className="stage-grid"/>
         <div className="mentor-glow"/>
-        <div className="mentor-orb"><div className="orb-shine"/><div className="orb-eyes"><i/><i/></div><div className="orb-mouth"/></div>
-        <div className="mentor-ring ring-a"/><div className="mentor-ring ring-b"/>
+        <MentorScene />
         <div className="stage-label stage-label-top"><span className="pulse-dot"/> CONCEPTUAL VISUALIZATION</div>
         <div className="stage-caption"><span>MENTOR INTERFACE / 01</span><span>PORTFOLIO CONCEPT</span></div>
       </div>
