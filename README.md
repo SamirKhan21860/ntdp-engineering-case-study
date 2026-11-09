@@ -1,28 +1,40 @@
 # NTDP — Frontend Engineering Case Study
 
-A Next.js case-study website documenting frontend contributions to the National Talent Discovery Program (NTDP) AI mentorship and talent-development platform.
+An editorial, interactive case study documenting frontend engineering on the National Talent Discovery Program (NTDP), an AI-powered mentorship and talent-development platform.
 
 ## Run locally
 
-```bash
+\`\`\`bash
 npm install
 npm run dev
-```
+\`\`\`
 
 Open http://localhost:3000.
 
-## Asset setup
+## Assets
 
-Place the 40 supplied PNG design exports in `public/ntdp/` and the supplied brand board at `public/ntdp-branding.jpg`. The current page references the onboarding, chat, courses, project detail, feedback, and profile exports by their original filenames.
+The current showcase uses the supplied NTDP design exports hosted in ImageKit. Their URLs and the gallery metadata are centralized in \`lib/ntdp-assets.ts\`; update the manifest there rather than duplicating asset URLs in page components.
 
-## Accuracy and attribution notes
+The displayed interface images are supplied design exports, not screenshots captured from a live production application.
+
+## Accuracy notes
 
 - The product was under active development during the documented contribution period; this case study does not claim a public launch or production deployment.
-- The 150+ reusable component figure is a team delivery metric across six product surfaces over two months, delivered by two frontend engineers.
-- The AI mentor illustration is an original conceptual portfolio mockup, not the proprietary NTDP avatar or 3D model.
-- Supplied interface images are design exports, not screenshots captured from a live production application.
-- Do not add credentials, API keys, private endpoints, or proprietary implementation code to this public portfolio.
+- 150+ reusable components were built across six product surfaces over a two-month period.
+- The frontend effort involved two frontend engineers.
+- The AI mentor illustration is an original conceptual portfolio visualization, not the proprietary NTDP avatar or 3D model.
+- The architecture explorer is an explanatory frontend model, not a representation of the complete internal system architecture.
+- No live AI service, backend, private endpoint, credential, or proprietary implementation code is represented by the interactive portfolio demonstrations.
+
+## Experience
+
+- Responsive editorial case-study layout.
+- Product interface gallery using the supplied design exports.
+- Interactive frontend architecture explorer.
+- Illustrative mentor and conversational UI concepts.
+- Scroll-triggered reveals with GSAP ScrollTrigger.
+- Reduced-motion support and responsive navigation.
 
 ## Stack
 
-Next.js, React, TypeScript, Tailwind CSS, Lucide icons.
+Next.js 15, React 19, TypeScript, Tailwind CSS, GSAP + ScrollTrigger, Lucide React.
