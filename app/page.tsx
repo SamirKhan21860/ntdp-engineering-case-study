@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Play, Sparkles, Volume2, X } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Sparkles, X } from 'lucide-react';
 import { ntdpAssets, ntdpScreens as screens } from '../lib/ntdp-assets';
 
 const architecture = [
@@ -25,7 +25,6 @@ export default function Home() {
   const [active, setActive] = useState(0);
   const [activeLayer, setActiveLayer] = useState('experience');
   const [menu, setMenu] = useState(false);
-  const [chatStarted, setChatStarted] = useState(false);
   const [voiceMode, setVoiceMode] = useState(false);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ export default function Home() {
           scrollTrigger: { trigger: group, start: 'top 84%', once: true }
         });
       });
-    }, root);
+    }, root.current);
     return () => ctx.revert();
   }, []);
 
@@ -131,7 +130,7 @@ export default function Home() {
           <div className="chat-avatar"><Sparkles size={18}/></div>
           <div className="chat-content"><span className="chat-speaker">NTDP MENTOR</span><p>Every meaningful project starts with a question. What would you like to explore today?</p><div className="chat-suggestions"><span>Explore a skill</span><span>Plan a project</span><span>Find a learning path</span></div></div>
         </div>
-        <div className="chat-demo-footer"><span>{voiceMode ? <><AudioLines size={15}/> VOICE INTERACTION CONCEPT</> : <><MessageCircle size={15}/> CONVERSATIONAL INTERFACE</>}</span><button onClick={()=>{setVoiceMode(!voiceMode);setChatStarted(true)}}><Mic size={15}/>{voiceMode?'SHOW TEXT MODE':'EXPLORE VOICE MODE'}<ChevronRight size={14}/></button></div>
+        <div className="chat-demo-footer"><span>{voiceMode ? <><AudioLines size={15}/> VOICE INTERACTION CONCEPT</> : <><MessageCircle size={15}/> CONVERSATIONAL INTERFACE</>}</span><button onClick={()=>setVoiceMode(!voiceMode)}><Mic size={15}/>{voiceMode?'SHOW TEXT MODE':'EXPLORE VOICE MODE'}<ChevronRight size={14}/></button></div>
       </div>
     </section>
 
