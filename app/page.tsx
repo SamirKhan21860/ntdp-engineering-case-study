@@ -30,6 +30,9 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const scope = root.current;
+    if (!scope) return;
+
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
         gsap.fromTo(element, { y: 34, autoAlpha: 0 }, {
@@ -43,7 +46,7 @@ export default function Home() {
           scrollTrigger: { trigger: group, start: 'top 84%', once: true }
         });
       });
-    }, root.current);
+    }, scope);
     return () => ctx.revert();
   }, []);
 
