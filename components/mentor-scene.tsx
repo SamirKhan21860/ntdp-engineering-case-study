@@ -81,6 +81,7 @@ function OrbitalMentor() {
 export default function MentorScene() {
   const [inView, setInView] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [webglReady, setWebglReady] = useState(false);
   const host = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -98,10 +99,7 @@ export default function MentorScene() {
     }
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setInView(true);
-        observer.disconnect();
-      }
+      setInView(entry.isIntersecting);
     }, { rootMargin: '180px 0px' });
 
     observer.observe(node);
@@ -113,11 +111,13 @@ export default function MentorScene() {
 
   return (
     <div ref={host} className="mentor-canvas-shell" aria-hidden="true">
-      <div className="mentor-scene-fallback">
-        <div className="mentor-fallback-core" />
-        <div className="mentor-fallback-ring mentor-fallback-ring-a" />
-        <div className="mentor-fallback-ring mentor-fallback-ring-b" />
-      </div>
+      {!webglReady && (
+        <div className="mentor-scene-fallback">
+          <div className="mentor-fallback-core" />
+          <div className="mentor-fallback-ring mentor-fallback-ring-a" />
+          <div className="mentor-fallback-ring mentor-fallback-ring-b" />
+        </div>
+      )}
       {inView && (
         <Canvas
           className="mentor-canvas"
@@ -125,6 +125,7 @@ export default function MentorScene() {
           camera={{ position: [0, 0, 5.8], fov: 42 }}
           gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
           frameloop={reducedMotion ? 'demand' : 'always'}
+          onCreated={() => setWebglReady(true)}
         >
           <OrbitalMentor />
         </Canvas>
