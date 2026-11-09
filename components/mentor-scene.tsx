@@ -111,7 +111,7 @@ export default function MentorScene() {
 
   return (
     <div ref={host} className="mentor-canvas-shell" aria-hidden="true">
-      {!webglReady && (
+      {(!webglReady || !inView) && (
         <div className="mentor-scene-fallback">
           <div className="mentor-fallback-core" />
           <div className="mentor-fallback-ring mentor-fallback-ring-a" />
