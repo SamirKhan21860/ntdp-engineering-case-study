@@ -1,16 +1,171 @@
 'use client';
-import { useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, Menu, X, Sparkles } from 'lucide-react';
+
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Sparkles, X } from 'lucide-react';
 import { ntdpAssets, ntdpScreens as screens } from '../lib/ntdp-assets';
-export default function Home(){const [active,setActive]=useState(0);const [menu,setMenu]=useState(false);return <main>
- <nav className="fixed top-0 z-50 flex w-full items-center justify-between px-[5vw] py-5 mix-blend-multiply"><a href="#top" className="text-xs font-bold tracking-[.18em]">NTDP<span className="ml-2 font-normal text-[#9f75fd]">/ CASE STUDY</span></a><div className="hidden gap-8 md:flex">{[['Story','#story'],['Experience','#experience'],['Deep dive','#deep-dive'],['My contribution','#contribution'],['Engineering','#engineering']].map(([n,h])=><a className="eyebrow hover:opacity-50" href={h} key={n}>{n}</a>)}</div><button className="md:hidden" onClick={()=>setMenu(!menu)} aria-label="Toggle navigation">{menu?<X/>:<Menu/>}</button></nav>
- {menu&&<div className="fixed inset-0 z-40 flex flex-col justify-center gap-8 bg-[#f4f1eb] px-10 text-4xl"><a onClick={()=>setMenu(false)} href="#story">Story</a><a onClick={()=>setMenu(false)} href="#experience">Experience</a><a onClick={()=>setMenu(false)} href="#deep-dive">Deep dive</a><a onClick={()=>setMenu(false)} href="#contribution">My contribution</a><a onClick={()=>setMenu(false)} href="#engineering">Engineering</a></div>}
- <section id="top" className="relative flex min-h-[92vh] flex-col justify-end px-[5vw] pb-12 pt-32"><div className="eyebrow mb-8 flex items-center gap-3"><span className="h-2 w-2 rounded-full bg-[#9f75fd]"/> A FRONTEND ENGINEERING CASE STUDY <span className="text-[#77727c]">· CONVO</span></div><h1 className="display max-w-[1200px]">Mentorship,<br/><span className="serif italic text-[#9f75fd]">made more</span><br/>human.</h1><div className="mt-12 grid gap-8 border-t border-black/15 pt-6 md:grid-cols-[1fr_auto] md:items-end"><p className="max-w-xl text-lg leading-relaxed text-[#615c66]">An AI-powered talent-development experience connecting conversational guidance, learning, and project-based growth.</p><a href="#story" className="pill inline-flex w-fit items-center gap-3">EXPLORE THE EXPERIENCE <ArrowDownRight size={15}/></a></div><div className="pointer-events-none absolute right-[7vw] top-[24%] hidden h-40 w-40 rounded-full bg-[#d9c5ff]/50 blur-3xl md:block"/></section>
- <section id="story" className="section bg-[#1b1920] text-[#f4f1eb]"><div className="grid gap-12 md:grid-cols-[.8fr_1.2fr]"><div><div className="eyebrow text-[#c9b4ff]">01 / THE PRODUCT</div><div className="mt-24 text-sm text-white/45">NATIONAL TALENT<br/>DISCOVERY PROGRAM</div><div className="mt-8 max-w-md overflow-hidden rounded-sm border border-white/10 bg-white/5 p-3"><img src={ntdpAssets.branding} alt="Original NTDP brand identity and visual direction board" className="h-auto w-full object-contain" loading="lazy"/><p className="mt-3 eyebrow text-white/40">ORIGINAL PRODUCT BRANDING</p></div></div><div><h2 className="text-4xl leading-[1.08] tracking-[-.05em] md:text-6xl">A connected journey from <span className="serif italic text-[#c9b4ff]">curiosity</span> to capability.</h2><p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/60">NTDP brings together AI mentorship, structured learning, project work, and feedback in a single learner-facing experience. The product was under active development during my contribution.</p><div className="mt-16 grid grid-cols-3 gap-4 border-t border-white/20 pt-6"><div><div className="text-4xl md:text-6xl">150+</div><div className="eyebrow mt-3 text-white/45">TEAM COMPONENTS</div></div><div><div className="text-4xl md:text-6xl">06</div><div className="eyebrow mt-3 text-white/45">PRODUCT SURFACES</div></div><div><div className="text-4xl md:text-6xl">02</div><div className="eyebrow mt-3 text-white/45">MONTHS</div></div></div><p className="mt-4 text-xs text-white/40">Team delivery figures; component work completed by two frontend engineers.</p></div></div></section>
- <section id="experience" className="section"><div className="flex flex-wrap items-end justify-between gap-6"><div><div className="eyebrow text-[#9f75fd]">02 / PRODUCT EXPERIENCE</div><h2 className="mt-6 text-5xl tracking-[-.06em] md:text-7xl">Explore the<br/><span className="serif italic">ecosystem.</span></h2></div><p className="max-w-sm text-sm leading-relaxed text-[#77727c]">A selection of original design exports from the product. Explore how the core experiences fit together.</p></div><div className="mt-16 grid gap-8 md:grid-cols-[.7fr_1.3fr]"><div className="flex flex-col">{screens.map((s,i)=><button key={s.name} onClick={()=>setActive(i)} className={`rule flex items-center justify-between py-5 text-left ${active===i?'text-[#9f75fd]':'text-[#77727c]'}`}><span><span className="eyebrow mr-4">{s.tag}</span><span className="text-xl tracking-tight">{s.name}</span></span><ArrowUpRight size={18}/></button>)}</div><div className="min-w-0"><div className="image-frame aspect-[1.35/1] p-3 md:p-6">{screens[active].img ? <img key={screens[active].img} src={screens[active].img} alt={`${screens[active].name} original NTDP design`} className="rounded-sm object-contain" loading="lazy" decoding="async"/> : <div className="flex h-full min-h-64 flex-col items-center justify-center gap-3 rounded-sm border border-dashed border-black/20 bg-white/40 p-8 text-center"><span className="eyebrow text-[#9f75fd]">IMAGE PENDING</span><p className="max-w-xs text-sm text-[#77727c]">The selected original product interface is being prepared for this gallery.</p></div>}</div><div className="mt-5 flex justify-between gap-4"><div><div className="text-2xl tracking-tight">{screens[active].name}</div><p className="mt-2 max-w-md text-sm text-[#77727c]">{screens[active].desc}</p></div><span className="eyebrow text-[#9f75fd]">0{active+1} / 06</span></div></div></div></section>
- <section className="section bg-[#eee7ff]"><div className="eyebrow text-[#5a1685]">03 / THE AI EXPERIENCE</div><div className="mt-8 grid gap-10 md:grid-cols-2 md:items-center"><div><h2 className="text-5xl leading-[.98] tracking-[-.07em] md:text-7xl">A presence<br/>beyond the<br/><span className="serif italic text-[#5a1685]">prompt.</span></h2><p className="mt-8 max-w-lg text-base leading-relaxed text-[#625b6d]">The AI experience combined streaming conversations, voice interaction, and a 3D mentor with live lip-sync. The scene shown here is an original conceptual visualization created for this portfolio—not the proprietary NTDP avatar.</p><div className="mt-8 flex flex-wrap gap-2"><span className="pill">STREAMING CHAT</span><span className="pill">STT / TTS</span><span className="pill">THREE.JS</span><span className="pill">REACT THREE FIBER</span></div></div><div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-[3px] bg-[#17141e]"><div className="absolute h-72 w-72 rounded-full bg-[#8c64d9]/30 blur-[80px]"/><div className="relative flex h-64 w-64 items-center justify-center rounded-[48%_48%_44%_44%] border border-[#c9b1ff]/50 bg-gradient-to-br from-[#e5d8ff] via-[#9f75fd] to-[#34244f] shadow-[0_20px_100px_#8c64d966]"><div className="absolute left-[25%] top-[42%] h-3 w-3 rounded-full bg-[#211a2b] shadow-[92px_0_0_#211a2b]"/><div className="absolute bottom-[27%] h-8 w-16 rounded-b-full border-b-[5px] border-[#211a2b]"/><div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[9px] tracking-[.18em] text-white/80 backdrop-blur">CONCEPTUAL 3D MENTOR</div></div><div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-[10px] tracking-[.14em] text-white/50"><span>ORIGINAL PORTFOLIO CONCEPT</span><Sparkles size={14}/></div></div></div></section>
- <section id="deep-dive" className="section bg-[#1b1920] text-[#f4f1eb]"><div className="eyebrow text-[#c9b4ff]">04 / UNDER THE INTERFACE</div><div className="mt-8 grid gap-12 md:grid-cols-[.85fr_1.15fr]"><div><h2 className="text-5xl leading-[1.02] tracking-[-.06em] md:text-7xl">Designing for<br/><span className="serif italic text-[#c9b4ff]">conversation.</span></h2><p className="mt-8 max-w-md leading-relaxed text-white/55">The AI experience was not a static chat window. It had to support an ongoing exchange, remain usable as conversations grew, and connect text with voice and an expressive visual mentor.</p></div><div className="grid gap-px bg-white/15"><article className="bg-[#1b1920] py-7 md:px-8"><div className="eyebrow text-[#c9b4ff]">01 / STREAMING</div><h3 className="mt-4 text-2xl">Responses as they arrive</h3><p className="mt-3 max-w-xl leading-relaxed text-white/55">Implemented the streaming chatbot experience so responses could appear progressively, rather than making learners wait for a complete answer before the interface responded.</p></article><article className="bg-[#1b1920] py-7 md:px-8"><div className="eyebrow text-[#c9b4ff]">02 / VIRTUALIZATION</div><h3 className="mt-4 text-2xl">Long conversations, considered</h3><p className="mt-3 max-w-xl leading-relaxed text-white/55">Built conversation virtualization to keep long chat sessions manageable in the interface, avoiding the assumption that every message needs to remain mounted in the page at once.</p></article><article className="bg-[#1b1920] py-7 md:px-8"><div className="eyebrow text-[#c9b4ff]">03 / VOICE + 3D</div><h3 className="mt-4 text-2xl">A more embodied interaction</h3><p className="mt-3 max-w-xl leading-relaxed text-white/55">Integrated speech-to-text and text-to-speech experiences, and primarily implemented the frontend 3D mentor with Three.js and React Three Fiber, including live lip-sync.</p></article></div></div><div className="mt-20 border-t border-white/15 pt-8"><div className="eyebrow text-[#c9b4ff]">THE ENGINEERING SURFACE</div><div className="mt-8 grid gap-8 md:grid-cols-3"><div><div className="text-3xl tracking-tight">01</div><h3 className="mt-4 text-xl">Interaction layer</h3><p className="mt-3 text-sm leading-relaxed text-white/50">React interfaces, reusable components, responsive states, and the learner-facing AI experience.</p></div><div><div className="text-3xl tracking-tight">02</div><h3 className="mt-4 text-xl">State + forms</h3><p className="mt-3 text-sm leading-relaxed text-white/50">Effector for frontend state, with React Hook Form and Zod supporting structured form workflows.</p></div><div><div className="text-3xl tracking-tight">03</div><h3 className="mt-4 text-xl">External services</h3><p className="mt-3 text-sm leading-relaxed text-white/50">REST API integration and Google and Microsoft OAuth in the product's authentication experience.</p></div></div></div></section>
- <section id="contribution" className="section bg-[#e9e3d9]"><div className="eyebrow text-[#7250b4]">05 / CONTRIBUTION MAP</div><div className="mt-8 grid gap-12 md:grid-cols-[.8fr_1.2fr]"><div><h2 className="text-5xl leading-[1.02] tracking-[-.06em] md:text-7xl">Where I<br/><span className="serif italic text-[#7250b4]">made impact.</span></h2><p className="mt-8 max-w-md leading-relaxed text-[#625d63]">A clear view of my frontend scope within a collaborative product effort. This is a contribution map, not a claim about the complete internal system architecture.</p></div><div className="grid gap-4"><div className="border border-black/15 bg-[#f4f1eb] p-7 md:p-9"><div className="eyebrow text-[#7250b4]">MY DIRECT FRONTEND CONTRIBUTIONS</div><div className="mt-6 grid gap-6 sm:grid-cols-2"><div><h3 className="text-xl">AI interaction</h3><p className="mt-2 text-sm leading-relaxed text-[#77727c]">Streaming chat UI, conversation virtualization, voice interaction integration, and the frontend 3D mentor experience.</p></div><div><h3 className="text-xl">Product surfaces</h3><p className="mt-2 text-sm leading-relaxed text-[#77727c]">Learner-facing interfaces, reusable component patterns, authentication flows, and integration of REST APIs.</p></div><div><h3 className="text-xl">Frontend foundations</h3><p className="mt-2 text-sm leading-relaxed text-[#77727c]">Effector state management, structured forms with React Hook Form and Zod, and OAuth integration.</p></div><div><h3 className="text-xl">Specialist interface</h3><p className="mt-2 text-sm leading-relaxed text-[#77727c]">Three.js and React Three Fiber implementation for the mentor presentation, including live lip-sync.</p></div></div></div><div className="border border-black/15 p-7 md:p-9"><div className="eyebrow text-[#7250b4]">SHARED TEAM DELIVERY</div><div className="mt-6 grid gap-6 sm:grid-cols-3"><div><div className="text-4xl tracking-[-.06em]">02</div><p className="mt-2 text-sm text-[#77727c]">Frontend engineers collaborating on the product.</p></div><div><div className="text-4xl tracking-[-.06em]">06</div><p className="mt-2 text-sm text-[#77727c]">Product surfaces covered by the shared frontend effort.</p></div><div><div className="text-4xl tracking-[-.06em]">150+</div><p className="mt-2 text-sm text-[#77727c]">Reusable components delivered by the team.</p></div></div><p className="mt-6 border-t border-black/15 pt-4 text-xs leading-relaxed text-[#77727c]">These are team-level delivery figures, not a count of components authored by me individually.</p></div></div></div></section>
- <section id="engineering" className="section"><div className="eyebrow text-[#9f75fd]">06 / ENGINEERING</div><h2 className="mt-6 max-w-4xl text-5xl leading-[1.02] tracking-[-.07em] md:text-7xl">The craft behind<br/><span className="serif italic">the experience.</span></h2><div className="mt-16 grid gap-px bg-black/15 md:grid-cols-2">{[{n:'01',t:'Frontend architecture',d:'Co-established frontend architecture as one of two frontend engineers, contributing reusable patterns across six product surfaces.'},{n:'02',t:'Streaming conversations',d:'Implemented streaming chat presentation and conversation virtualization for longer sessions.'},{n:'03',t:'Voice and 3D interaction',d:'Primarily implemented the frontend 3D mentor using Three.js and React Three Fiber, including live lip-sync and voice experience integration.'},{n:'04',t:'Product integrations',d:'Worked with Google and Microsoft OAuth, REST APIs, Effector, React Hook Form, and Zod.'}].map(x=><article key={x.n} className="bg-[#f4f1eb] p-8 md:p-12"><div className="eyebrow text-[#9f75fd]">{x.n}</div><h3 className="mt-8 text-3xl tracking-[-.04em]">{x.t}</h3><p className="mt-4 max-w-md leading-relaxed text-[#77727c]">{x.d}</p></article>)}</div><div className="mt-16 border-t border-black/15 pt-8"><div className="eyebrow text-[#9f75fd]">TECHNOLOGY</div><div className="mt-6 flex flex-wrap gap-2">{['Next.js 15','React 19','TypeScript','Effector','React Hook Form','Zod','Three.js','React Three Fiber','REST APIs','Google OAuth','Microsoft OAuth'].map(t=><span className="pill" key={t}>{t}</span>)}</div></div></section>
- <footer className="bg-[#1b1920] px-[5vw] py-16 text-[#f4f1eb]"><div className="eyebrow text-[#c9b4ff]">A NOTE ON THE WORK</div><p className="mt-8 max-w-4xl text-3xl leading-tight tracking-[-.04em] md:text-5xl">Building meaningful product experiences takes more than interfaces. It takes architecture, collaboration, and care for every interaction.</p><div className="mt-16 flex flex-wrap justify-between gap-4 border-t border-white/20 pt-6 text-xs text-white/45"><span>NTDP · FRONTEND ENGINEERING CASE STUDY</span><span>CONVO · ISLAMABAD, PAKISTAN</span><a href="#top" className="inline-flex items-center gap-2 text-white">BACK TO TOP <ArrowUpRight size={13}/></a></div><p className="mt-6 max-w-3xl text-[10px] leading-relaxed text-white/35">This case study documents frontend contributions to a product that was under development. The displayed interface images are supplied design exports. The 3D mentor visual is a conceptual portfolio mockup. No original proprietary 3D model or live backend is represented.</p></footer>
- </main>}
+
+const architecture = [
+  { id: 'experience', number: '01', title: 'Experience layer', label: 'React · Next.js', description: 'Learner-facing product surfaces, responsive interaction states, and the reusable component system that keeps the experience coherent.', details: ['Reusable interface components', 'Responsive product surfaces', 'Streaming conversation UI'], color: 'violet' },
+  { id: 'state', number: '02', title: 'State & forms', label: 'Effector · RHF · Zod', description: 'Structured frontend state and form workflows, with validation close to the interaction that depends on it.', details: ['Effector state management', 'React Hook Form workflows', 'Zod schema validation'], color: 'blue' },
+  { id: 'services', number: '03', title: 'Service integration', label: 'REST · OAuth', description: 'The frontend integration boundary connecting product experiences to REST APIs and external identity providers.', details: ['REST API integration', 'Google OAuth', 'Microsoft OAuth'], color: 'amber' },
+];
+
+function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+  return <div className={'eyebrow ' + (light ? 'text-[#c9b4ff]' : 'text-[#8b63d4]')}>{children}</div>;
+}
+
+function SectionIntro({ index, label, title, children, dark = false }: { index: string; label: string; title: React.ReactNode; children?: React.ReactNode; dark?: boolean }) {
+  return <div className="section-intro"><Eyebrow light={dark}>{index} / {label}</Eyebrow><h2 className={'section-heading mt-7 ' + (dark ? 'text-[#f5f1eb]' : 'text-[#19171d]')}>{title}</h2>{children && <div className={'mt-7 max-w-xl text-base leading-relaxed ' + (dark ? 'text-white/55' : 'text-[#77727c]')}>{children}</div>}</div>;
+}
+
+export default function Home() {
+  const root = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
+  const [activeLayer, setActiveLayer] = useState('experience');
+  const [menu, setMenu] = useState(false);
+  const [voiceMode, setVoiceMode] = useState(false);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
+        gsap.fromTo(element, { y: 34, autoAlpha: 0 }, {
+          y: 0, autoAlpha: 1, duration: 0.85, ease: 'power3.out',
+          scrollTrigger: { trigger: element, start: 'top 88%', once: true }
+        });
+      });
+      gsap.utils.toArray<HTMLElement>('[data-stagger]').forEach((group) => {
+        gsap.fromTo(group.children, { y: 28, autoAlpha: 0 }, {
+          y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out',
+          scrollTrigger: { trigger: group, start: 'top 84%', once: true }
+        });
+      });
+    }, root.current);
+    return () => ctx.revert();
+  }, []);
+
+  const selectedLayer = architecture.find((layer) => layer.id === activeLayer) ?? architecture[0];
+
+  return <main ref={root}>
+    <nav className="site-nav">
+      <a href="#top" className="brand-mark">NTDP<span>/ CASE STUDY</span></a>
+      <div className="hidden items-center gap-8 md:flex">
+        {[['Story','#story'],['Experience','#experience'],['Engineering','#deep-dive'],['Architecture','#architecture'],['Delivery','#contribution']].map(([name, href]) => <a className="eyebrow nav-link" href={href} key={name}>{name}</a>)}
+      </div>
+      <button className="nav-toggle md:hidden" onClick={() => setMenu(!menu)} aria-label="Toggle navigation" aria-expanded={menu}>{menu ? <X /> : <Menu />}</button>
+    </nav>
+    {menu && <div className="mobile-menu">{[['Story','#story'],['Experience','#experience'],['Engineering','#deep-dive'],['Architecture','#architecture'],['Delivery','#contribution']].map(([name,href])=><a key={name} href={href} onClick={()=>setMenu(false)}>{name}<ArrowUpRight size={20}/></a>)}</div>}
+
+    <section id="top" className="hero-section">
+      <div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/>
+      <div className="hero-content">
+        <div className="hero-kicker"><span className="status-dot"/> FRONTEND ENGINEERING <span className="kicker-divider"/> CONVO · PRODUCT CASE STUDY</div>
+        <h1 className="hero-title">Mentorship,<br/><em>made more</em><br/>human<span className="hero-period">.</span></h1>
+        <div className="hero-bottom"><p>An AI-powered talent-development experience connecting conversational guidance, structured learning, and project-based growth.</p><a href="#story" className="text-link">EXPLORE THE EXPERIENCE <ArrowDownRight size={17}/></a></div>
+      </div>
+      <div className="hero-index"><span>01 — 06</span><span>SCROLL TO EXPLORE</span></div>
+    </section>
+
+    <section id="story" className="section section-dark story-section">
+      <div className="story-grid">
+        <div data-reveal>
+          <Eyebrow light>01 / THE PRODUCT</Eyebrow>
+          <div className="brand-board"><img src={ntdpAssets.branding} alt="Original NTDP brand identity and visual direction board" loading="lazy"/><span>ORIGINAL PRODUCT BRANDING</span></div>
+        </div>
+        <div data-reveal>
+          <div className="story-overline">NATIONAL TALENT DISCOVERY PROGRAM</div>
+          <h2 className="story-heading">A connected journey from <em>curiosity</em> to capability.</h2>
+          <p className="story-copy">NTDP brings together AI mentorship, structured learning, project work, and feedback in a single learner-facing experience. The product was under active development during the contribution period.</p>
+          <div className="stat-row">
+            <div><strong>150<span>+</span></strong><small>REUSABLE COMPONENTS BUILT</small></div>
+            <div><strong>06</strong><small>PRODUCT SURFACES</small></div>
+            <div><strong>02</strong><small>MONTHS</small></div>
+          </div>
+          <p className="stat-footnote">Frontend delivery across a two-engineer collaboration.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" className="section experience-section">
+      <div className="experience-top" data-reveal><div><Eyebrow>02 / PRODUCT EXPERIENCE</Eyebrow><h2 className="section-heading mt-7">Explore the<br/><em>ecosystem.</em></h2></div><p>A selection of original design exports from the product. Move through the key learner experiences and see how the parts connect.</p></div>
+      <div className="product-explorer">
+        <div className="screen-list" role="tablist" aria-label="NTDP product screens">{screens.map((screen,i)=><button key={screen.name} role="tab" aria-selected={active===i} onClick={()=>setActive(i)} className={'screen-tab '+(active===i?'active':'')}><span className="screen-tab-index">0{i+1}</span><span>{screen.name}</span><ArrowUpRight size={17}/></button>)}</div>
+        <div className="screen-preview" data-reveal>
+          <div className="screen-image-wrap">{screens[active].img ? <img key={screens[active].img} src={screens[active].img} alt={screens[active].name+' original NTDP interface design export'} loading="lazy" decoding="async"/> : <div className="image-pending"><span>IMAGE PENDING</span><p>The original interface export is being prepared for this gallery.</p></div>}</div>
+          <div className="screen-caption"><div><span className="eyebrow">PRODUCT SURFACE</span><h3>{screens[active].name}</h3><p>{screens[active].desc}</p></div><span className="screen-count">0{active+1} <i>/</i> 06</span></div>
+        </div>
+      </div>
+      <div className="gallery-note"><span className="note-mark">i</span> These are supplied design exports, not screenshots captured from a live production application.</div>
+    </section>
+
+    <section className="ai-section">
+      <div className="ai-copy" data-reveal>
+        <Eyebrow>03 / THE AI EXPERIENCE</Eyebrow>
+        <h2 className="ai-heading">A presence<br/>beyond the<br/><em>prompt.</em></h2>
+        <p>The AI experience brought together streaming conversations, voice interaction, and a 3D mentor with live lip-sync. This portfolio concept visualizes the interaction direction without reproducing the proprietary NTDP avatar.</p>
+        <div className="tech-chips"><span>STREAMING CHAT</span><span>STT / TTS</span><span>THREE.JS</span><span>REACT THREE FIBER</span></div>
+      </div>
+      <div className="mentor-stage" data-reveal>
+        <div className="stage-grid"/>
+        <div className="mentor-glow"/>
+        <div className="mentor-orb"><div className="orb-shine"/><div className="orb-eyes"><i/><i/></div><div className="orb-mouth"/></div>
+        <div className="mentor-ring ring-a"/><div className="mentor-ring ring-b"/>
+        <div className="stage-label stage-label-top"><span className="pulse-dot"/> CONCEPTUAL VISUALIZATION</div>
+        <div className="stage-caption"><span>MENTOR INTERFACE / 01</span><span>PORTFOLIO CONCEPT</span></div>
+      </div>
+    </section>
+
+    <section id="deep-dive" className="section section-dark deep-section">
+      <div className="deep-intro" data-reveal><Eyebrow light>04 / UNDER THE INTERFACE</Eyebrow><h2 className="section-heading mt-7 text-[#f5f1eb]">Designed for<br/><em>conversation.</em></h2><p>The AI experience was not a static chat window. It had to support an ongoing exchange, remain usable as conversations grew, and connect text with voice and an expressive visual mentor.</p></div>
+      <div className="capability-list" data-stagger>
+        <article><span className="cap-number">01</span><div><span className="cap-label">STREAMING</span><h3>Responses as they arrive.</h3><p>Implemented the streaming chatbot experience so responses could appear progressively, rather than making learners wait for a complete answer before the interface responded.</p></div><MessageCircle className="cap-icon"/></article>
+        <article><span className="cap-number">02</span><div><span className="cap-label">VIRTUALIZATION</span><h3>Long conversations, considered.</h3><p>Built conversation virtualization to keep long chat sessions manageable in the interface, avoiding the assumption that every message needs to remain mounted at once.</p></div><Layers3 className="cap-icon"/></article>
+        <article><span className="cap-number">03</span><div><span className="cap-label">VOICE + 3D</span><h3>A more embodied interaction.</h3><p>Integrated speech-to-text and text-to-speech experiences, alongside a frontend 3D mentor built with Three.js and React Three Fiber, including live lip-sync.</p></div><AudioLines className="cap-icon"/></article>
+      </div>
+      <div className="chat-demo">
+        <div className="chat-demo-header"><div><span className="live-indicator"/> INTERACTION STUDY</div><span>ILLUSTRATIVE UI · NOT A LIVE AI SERVICE</span></div>
+        <div className="chat-demo-body">
+          <div className="chat-avatar"><Sparkles size={18}/></div>
+          <div className="chat-content"><span className="chat-speaker">NTDP MENTOR</span><p>Every meaningful project starts with a question. What would you like to explore today?</p><div className="chat-suggestions"><span>Explore a skill</span><span>Plan a project</span><span>Find a learning path</span></div></div>
+        </div>
+        <div className="chat-demo-footer"><span>{voiceMode ? <><AudioLines size={15}/> VOICE INTERACTION CONCEPT</> : <><MessageCircle size={15}/> CONVERSATIONAL INTERFACE</>}</span><button onClick={()=>setVoiceMode(!voiceMode)}><Mic size={15}/>{voiceMode?'SHOW TEXT MODE':'EXPLORE VOICE MODE'}<ChevronRight size={14}/></button></div>
+      </div>
+    </section>
+
+    <section id="architecture" className="section architecture-section">
+      <div data-reveal><Eyebrow>05 / FRONTEND ARCHITECTURE</Eyebrow><h2 className="section-heading mt-7">The system behind<br/><em>the surface.</em></h2><p className="architecture-lede">A frontend view of the product: how interface composition, state, forms, and service integrations fit together. This is an explanatory frontend model, not a claim about the complete internal system architecture.</p></div>
+      <div className="architecture-explorer">
+        <div className="architecture-map" role="tablist" aria-label="Frontend architecture layers">
+          {architecture.map((layer,i)=><button key={layer.id} role="tab" aria-selected={activeLayer===layer.id} onClick={()=>setActiveLayer(layer.id)} className={'architecture-node '+(activeLayer===layer.id?'selected':'')}><span className="node-number">{layer.number}</span><span className="node-main"><strong>{layer.title}</strong><small>{layer.label}</small></span><ChevronRight size={18}/></button>)}
+          <div className="architecture-flow"><span/><span/><span/></div>
+          <div className="architecture-foundation"><Code2 size={16}/> LEARNER-FACING PRODUCT</div>
+        </div>
+        <div className="architecture-detail" key={selectedLayer.id}>
+          <div className="detail-index">LAYER {selectedLayer.number}</div><h3>{selectedLayer.title}</h3><span className="detail-stack">{selectedLayer.label}</span><p>{selectedLayer.description}</p>
+          <ul>{selectedLayer.details.map(item=><li key={item}><Check size={15}/>{item}</li>)}</ul>
+          <div className="detail-foot"><Network size={15}/> FRONTEND RESPONSIBILITY</div>
+        </div>
+      </div>
+      <div className="architecture-stack"><span>CORE TOOLING</span>{['Next.js','React','TypeScript','Effector','React Hook Form','Zod','REST APIs','OAuth'].map(item=><i key={item}>{item}</i>)}</div>
+    </section>
+
+    <section id="contribution" className="section contribution-section">
+      <div className="contribution-top" data-reveal><Eyebrow>06 / DELIVERY & SCOPE</Eyebrow><h2 className="section-heading mt-7">From reusable<br/><em>systems to moments.</em></h2><p>A broad frontend engineering scope across the product: building the component foundation, shaping learner-facing experiences, and integrating the interactions that make the platform feel connected.</p></div>
+      <div className="delivery-grid" data-stagger>
+        <article className="delivery-card delivery-feature"><span className="delivery-index">01 / COMPONENT SYSTEM</span><strong>150<span>+</span></strong><h3>Reusable components built.</h3><p>A substantial interface foundation supporting consistency and repeatable patterns across the product experience.</p><div className="component-motif"><i/><i/><i/><i/><i/><i/><i/><i/><i/></div></article>
+        <article className="delivery-card"><span className="delivery-index">02 / PRODUCT SURFACES</span><strong>06</strong><h3>Connected product areas.</h3><p>From onboarding and mentorship to learning, projects, feedback, and profile experiences.</p><div className="surface-tags"><i>ONBOARDING</i><i>MENTORSHIP</i><i>LEARNING</i><i>PROJECTS</i><i>FEEDBACK</i><i>PROFILE</i></div></article>
+        <article className="delivery-card"><span className="delivery-index">03 / COLLABORATION</span><strong>02</strong><h3>Frontend engineers.</h3><p>A two-engineer frontend effort delivered over a focused two-month contribution period.</p><div className="collab-mark"><span/><span/></div></article>
+      </div>
+      <div className="scope-strip"><div><span className="eyebrow">ENGINEERING SCOPE</span><p>Component architecture · Streaming UI · Conversation virtualization · Voice integration · 3D mentor interface · State management · Forms & validation · OAuth · REST API integration</p></div><a href="#top" className="back-top">BACK TO TOP <ArrowUpRight size={16}/></a></div>
+    </section>
+
+    <footer className="site-footer">
+      <div className="footer-kicker"><Eyebrow light>NTDP / FRONTEND ENGINEERING</Eyebrow><span>CONVO · ISLAMABAD, PAKISTAN</span></div>
+      <h2>Technology should<br/>feel <em>human.</em></h2>
+      <div className="footer-bottom"><p>Building meaningful product experiences takes more than interfaces. It takes architecture, collaboration, and care for every interaction.</p><a href="#top">RETURN TO THE BEGINNING <ArrowUpRight size={16}/></a></div>
+      <p className="disclaimer">This case study documents frontend contributions to a product that was under development. Displayed interface images are supplied design exports. The mentor visual is a conceptual portfolio mockup; no original proprietary 3D model or live backend is represented.</p>
+    </footer>
+  </main>;
+}
