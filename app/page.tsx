@@ -16,10 +16,6 @@ function Eyebrow({ children, light = false }: { children: React.ReactNode; light
   return <div className={'eyebrow ' + (light ? 'text-[#c9b4ff]' : 'text-[#8b63d4]')}>{children}</div>;
 }
 
-function SectionIntro({ index, label, title, children, dark = false }: { index: string; label: string; title: React.ReactNode; children?: React.ReactNode; dark?: boolean }) {
-  return <div className="section-intro"><Eyebrow light={dark}>{index} / {label}</Eyebrow><h2 className={'section-heading mt-7 ' + (dark ? 'text-[#f5f1eb]' : 'text-[#19171d]')}>{title}</h2>{children && <div className={'mt-7 max-w-xl text-base leading-relaxed ' + (dark ? 'text-white/55' : 'text-[#77727c]')}>{children}</div>}</div>;
-}
-
 export default function Home() {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
@@ -30,6 +26,7 @@ export default function Home() {
   const [answer, setAnswer] = useState('A useful project begins with a problem worth solving. Start by describing who experiences the problem, what makes it difficult today, and what a better outcome would look like. Then reduce your first version to one small feature you can build, test, and learn from.'); 
   const [visibleAnswer, setVisibleAnswer] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [responseVersion, setResponseVersion] = useState(0);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -66,7 +63,7 @@ export default function Home() {
       }
     }, 18);
     return () => window.clearInterval(timer);
-  }, [answer]);
+  }, [answer, responseVersion]);
 
   const runPrompt = (value: string) => {
     const normalized = value.toLowerCase();
@@ -79,6 +76,7 @@ export default function Home() {
       : 'That is a thoughtful place to begin. Clarify the outcome you want, identify what you already know, and turn the gap into one practical next step. A small experiment will teach you more than trying to plan every detail upfront.';
     setQuestion(value);
     setAnswer(nextAnswer);
+    setResponseVersion((version) => version + 1);
   };
 
   return <main ref={root}>
@@ -124,7 +122,7 @@ export default function Home() {
     <section id="experience" className="section experience-section">
       <div className="experience-top" data-reveal><div><Eyebrow>02 / PRODUCT EXPERIENCE</Eyebrow><h2 className="section-heading mt-7">Explore the<br/><em>ecosystem.</em></h2></div><p>A selection of original design exports from the product. Move through the key learner experiences and see how the parts connect.</p></div>
       <div className="product-explorer">
-        <div className="screen-list" role="tablist" aria-label="NTDP product screens">{screens.map((screen,i)=><button key={screen.name} role="tab" aria-selected={active===i} onClick={()=>setActive(i)} className={'screen-tab '+(active===i?'active':'')}><span className="screen-tab-index">0{i+1}</span><span>{screen.name}</span><ArrowUpRight size={17}/></button>)}</div>
+        <div className="screen-list" role="group" aria-label="Choose an NTDP product screen">{screens.map((screen,i)=><button key={screen.name} type="button" aria-pressed={active===i} onClick={()=>setActive(i)} className={'screen-tab '+(active===i?'active':'')}><span className="screen-tab-index">0{i+1}</span><span>{screen.name}</span><ArrowUpRight size={17}/></button>)}</div>
         <div className="screen-preview" data-reveal>
           <div className="screen-image-wrap">{screens[active].img ? <img key={screens[active].img} src={screens[active].img} alt={screens[active].name+' original NTDP interface design export'} loading="lazy" decoding="async"/> : <div className="image-pending"><span>IMAGE PENDING</span><p>The original interface export is being prepared for this gallery.</p></div>}</div>
           <div className="screen-caption"><div><span className="eyebrow">PRODUCT SURFACE</span><h3>{screens[active].name}</h3><p>{screens[active].desc}</p></div><span className="screen-count">0{active+1} <i>/</i> 06</span></div>
@@ -164,7 +162,7 @@ export default function Home() {
           <div className="chat-content"><span className="chat-speaker">NTDP MENTOR <i>· CONCEPT</i></span><p>Every meaningful project starts with a question. What would you like to explore today?</p><div className="chat-suggestions"><button onClick={()=>runPrompt('Explore a skill')}>Explore a skill</button><button onClick={()=>runPrompt('Plan a project')}>Plan a project</button><button onClick={()=>runPrompt('Find a learning path')}>Find a learning path</button></div></div>
         </div>
         <div className="chat-user-message"><span>YOU</span><p>{question}</p></div>
-        <div className="chat-response" aria-live="polite">
+        <div className="chat-response" aria-live="polite" aria-busy={isStreaming}>
           <div className="chat-avatar"><Sparkles size={16}/></div>
           <div className="chat-content"><span className="chat-speaker">MENTOR RESPONSE <i>· STREAMING PREVIEW</i></span><p>{visibleAnswer}{isStreaming && <span className="stream-caret" aria-label="Response streaming"/>}</p></div>
         </div>
@@ -181,8 +179,8 @@ export default function Home() {
     <section id="architecture" className="section architecture-section">
       <div data-reveal><Eyebrow>05 / FRONTEND ARCHITECTURE</Eyebrow><h2 className="section-heading mt-7">The system behind<br/><em>the surface.</em></h2><p className="architecture-lede">A frontend view of the product: how interface composition, state, forms, and service integrations fit together. This is an explanatory frontend model, not a claim about the complete internal system architecture.</p></div>
       <div className="architecture-explorer">
-        <div className="architecture-map" role="tablist" aria-label="Frontend architecture layers">
-          {architecture.map((layer,i)=><button key={layer.id} role="tab" aria-selected={activeLayer===layer.id} onClick={()=>setActiveLayer(layer.id)} className={'architecture-node '+(activeLayer===layer.id?'selected':'')}><span className="node-number">{layer.number}</span><span className="node-main"><strong>{layer.title}</strong><small>{layer.label}</small></span><ChevronRight size={18}/></button>)}
+        <div className="architecture-map" role="group" aria-label="Choose a frontend architecture layer">
+          {architecture.map((layer,i)=><button key={layer.id} type="button" aria-pressed={activeLayer===layer.id} onClick={()=>setActiveLayer(layer.id)} className={'architecture-node '+(activeLayer===layer.id?'selected':'')}><span className="node-number">{layer.number}</span><span className="node-main"><strong>{layer.title}</strong><small>{layer.label}</small></span><ChevronRight size={18}/></button>)}
           <div className="architecture-flow"><span/><span/><span/></div>
           <div className="architecture-foundation"><Code2 size={16}/> LEARNER-FACING PRODUCT</div>
         </div>
