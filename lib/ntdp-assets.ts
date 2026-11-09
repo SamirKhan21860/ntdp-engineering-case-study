@@ -1,7 +1,8 @@
 export const ntdpAssets = {
   onboarding:
     "https://ik.imagekit.io/msameerrafiq3/ntdp-prjt-pblc-assets/public/Sign%20up%20-%20Start-7.webp?updatedAt=1794245344550",
-  chat: null,
+  chat:
+    "https://ik.imagekit.io/msameerrafiq3/ntdp-prjt-pblc-assets/public/Chat-4.webp?updatedAt=1794245341708",
   courses:
     "https://ik.imagekit.io/msameerrafiq3/ntdp-prjt-pblc-assets/public/Courses-1.webp?updatedAt=1794245344752",
   project:
