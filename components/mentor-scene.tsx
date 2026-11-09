@@ -70,7 +70,7 @@ function OrbitalMentor() {
       </group>
       <points>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[particles, 3]} count={particles.length / 3} />
+          <bufferAttribute attach="attributes-position" args={[particles, 3]} />
         </bufferGeometry>
         <pointsMaterial color="#d9caff" size={0.018} transparent opacity={0.72} sizeAttenuation depthWrite={false} />
       </points>
