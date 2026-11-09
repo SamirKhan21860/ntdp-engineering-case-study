@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Sparkles, X } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, AudioLines, Check, ChevronRight, Code2, Layers3, Menu, MessageCircle, Mic, Network, Send, Sparkles, X } from 'lucide-react';
 import { ntdpAssets, ntdpScreens as screens } from '../lib/ntdp-assets';
 
 const architecture = [
@@ -26,6 +26,10 @@ export default function Home() {
   const [activeLayer, setActiveLayer] = useState('experience');
   const [menu, setMenu] = useState(false);
   const [voiceMode, setVoiceMode] = useState(false);
+  const [question, setQuestion] = useState('How do I turn an idea into a project?');
+  const [answer, setAnswer] = useState('A useful project begins with a problem worth solving. Start by describing who experiences the problem, what makes it difficult today, and what a better outcome would look like. Then reduce your first version to one small feature you can build, test, and learn from.'); 
+  const [visibleAnswer, setVisibleAnswer] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -47,6 +51,35 @@ export default function Home() {
   }, []);
 
   const selectedLayer = architecture.find((layer) => layer.id === activeLayer) ?? architecture[0];
+
+  useEffect(() => {
+    if (!answer) return;
+    setVisibleAnswer('');
+    setIsStreaming(true);
+    let cursor = 0;
+    const timer = window.setInterval(() => {
+      cursor = Math.min(cursor + 3, answer.length);
+      setVisibleAnswer(answer.slice(0, cursor));
+      if (cursor >= answer.length) {
+        window.clearInterval(timer);
+        setIsStreaming(false);
+      }
+    }, 18);
+    return () => window.clearInterval(timer);
+  }, [answer]);
+
+  const runPrompt = (value: string) => {
+    const normalized = value.toLowerCase();
+    const nextAnswer = normalized.includes('skill')
+      ? 'Choose one skill that supports a goal you care about. Break it into smaller capabilities, find a practical exercise for each, and build something that makes your progress visible. Learning becomes more durable when knowledge is applied.'
+      : normalized.includes('learning') || normalized.includes('path')
+      ? 'Start with your current level and the outcome you want to reach. Map the concepts between those two points, then sequence them from foundational to advanced. Pair each stage with a small project so the path produces evidence of what you can do.'
+      : normalized.includes('project') || normalized.includes('idea')
+      ? 'A useful project begins with a problem worth solving. Start by describing who experiences the problem, what makes it difficult today, and what a better outcome would look like. Then reduce your first version to one small feature you can build, test, and learn from.'
+      : 'That is a thoughtful place to begin. Clarify the outcome you want, identify what you already know, and turn the gap into one practical next step. A small experiment will teach you more than trying to plan every detail upfront.';
+    setQuestion(value);
+    setAnswer(nextAnswer);
+  };
 
   return <main ref={root}>
     <nav className="site-nav">
@@ -125,11 +158,22 @@ export default function Home() {
         <article><span className="cap-number">03</span><div><span className="cap-label">VOICE + 3D</span><h3>A more embodied interaction.</h3><p>Integrated speech-to-text and text-to-speech experiences, alongside a frontend 3D mentor built with Three.js and React Three Fiber, including live lip-sync.</p></div><AudioLines className="cap-icon"/></article>
       </div>
       <div className="chat-demo">
-        <div className="chat-demo-header"><div><span className="live-indicator"/> INTERACTION STUDY</div><span>ILLUSTRATIVE UI · NOT A LIVE AI SERVICE</span></div>
+        <div className="chat-demo-header"><div><span className="live-indicator"/> INTERACTION STUDY</div><span>SIMULATED RESPONSE · NO AI SERVICE CONNECTED</span></div>
         <div className="chat-demo-body">
           <div className="chat-avatar"><Sparkles size={18}/></div>
-          <div className="chat-content"><span className="chat-speaker">NTDP MENTOR</span><p>Every meaningful project starts with a question. What would you like to explore today?</p><div className="chat-suggestions"><span>Explore a skill</span><span>Plan a project</span><span>Find a learning path</span></div></div>
+          <div className="chat-content"><span className="chat-speaker">NTDP MENTOR <i>· CONCEPT</i></span><p>Every meaningful project starts with a question. What would you like to explore today?</p><div className="chat-suggestions"><button onClick={()=>runPrompt('Explore a skill')}>Explore a skill</button><button onClick={()=>runPrompt('Plan a project')}>Plan a project</button><button onClick={()=>runPrompt('Find a learning path')}>Find a learning path</button></div></div>
         </div>
+        <div className="chat-user-message"><span>YOU</span><p>{question}</p></div>
+        <div className="chat-response" aria-live="polite">
+          <div className="chat-avatar"><Sparkles size={16}/></div>
+          <div className="chat-content"><span className="chat-speaker">MENTOR RESPONSE <i>· STREAMING PREVIEW</i></span><p>{visibleAnswer}{isStreaming && <span className="stream-caret" aria-label="Response streaming"/>}</p></div>
+        </div>
+        {voiceMode && <div className="voice-concept"><div className="voice-bars" aria-hidden="true">{Array.from({length:24},(_,i)=><i key={i}/>)}</div><span>VOICE MODE CONCEPT · SPEECH INPUT / SPOKEN RESPONSE</span><small>Visual demonstration only. No microphone or audio is activated.</small></div>}
+        <form className="chat-input-row" onSubmit={(event)=>{event.preventDefault();if(question.trim())runPrompt(question.trim())}}>
+          <label className="sr-only" htmlFor="mentor-question">Ask the mentor a question</label>
+          <input id="mentor-question" value={question} onChange={(event)=>setQuestion(event.target.value)} placeholder="Ask the mentor something…" />
+          <button type="submit" aria-label="Send question" disabled={!question.trim() || isStreaming}><Send size={17}/></button>
+        </form>
         <div className="chat-demo-footer"><span>{voiceMode ? <><AudioLines size={15}/> VOICE INTERACTION CONCEPT</> : <><MessageCircle size={15}/> CONVERSATIONAL INTERFACE</>}</span><button onClick={()=>setVoiceMode(!voiceMode)}><Mic size={15}/>{voiceMode?'SHOW TEXT MODE':'EXPLORE VOICE MODE'}<ChevronRight size={14}/></button></div>
       </div>
     </section>
