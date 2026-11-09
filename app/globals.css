@@ -81,7 +81,7 @@ button{font:inherit}
 
 
 /* Lazy-loaded conceptual WebGL mentor */
-.mentor-canvas-shell{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.mentor-canvas-shell{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:auto}
 .mentor-canvas{position:absolute!important;inset:0;width:100%!important;height:100%!important}
 .mentor-scene-fallback{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}
 .mentor-fallback-core{width:min(30%,190px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 26%,#f5edff 0,#c5a9ff 12%,#8e67d4 42%,#39284f 78%,#211a2d 100%);box-shadow:0 0 90px #9d76e777,inset -18px -22px 42px #20152e99;animation:mentor-breathe 5s ease-in-out infinite}
